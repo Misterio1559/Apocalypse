@@ -57,7 +57,7 @@ class Card_mob(pygame.sprite.Sprite):  # Карта моба (юнита)
 
 
 class Game:  # Сама игра и её внутренние составляющие
-    def __init__(self, screen, size):
+    def __init__(self, screen, size, count):
         self.turn = 1  # чей ход
         db = sqlite3.connect('cards.db')  # Загружаем базу данных с картами
         cur = db.cursor()
@@ -77,14 +77,14 @@ class Game:  # Сама игра и её внутренние составляю
         # for x in res:
         #     deck_boosts.append(Card_boost(x))
 
-        self.player1_hand = [i for i in random.sample(deck_mobs, 3)]  # Рука первого игрока
+        self.player1_hand = [i for i in random.sample(deck_mobs, count)]  # Рука первого игрока
         # self.player1_hand.append([card for card in random.sample(deck_boosts, 3)])
         # Бусты первого игрока (последний элемент списка (self.player1_hand - бусты в руке)
 
         self.coord_sp = [[], []]
         self.selected_card = None
 
-        self.player2_hand = [i for i in random.sample(deck_mobs, 3)]  # Рука второго игрока
+        self.player2_hand = [i for i in random.sample(deck_mobs, count)]  # Рука второго игрока
         # self.player2_hand.append([card for card in random.sample(deck_boosts, 3)])
         # Бусты второго игрока (последний элемент списка (self.player1_hand - бусты в руке)
 
@@ -166,5 +166,6 @@ class Game:  # Сама игра и её внутренние составляю
             draw('GAME OVER', screen, x=100, y=185, size=400)
             self.turn = 99
             pygame.display.flip()
+            sleep(4)
         else:
             pass

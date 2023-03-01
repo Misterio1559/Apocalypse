@@ -112,8 +112,35 @@ class Interface:  # Интерфейс, здесь происходят те, и
         size = self.size
         self.music.load("Round.mp3")
         self.music.play(-1)
+        count = 0
+        screen.fill((0, 0, 0))
+        choice = True
+        draw("Укажите уровень сложности схватки (число карт)", screen, size[0] // 8, size[1] // 8, 'white', size=40)
+        draw("Путём нажатия клавиш от 1 до 3", screen, size[0] // 8, size[1] // 8 * 2, 'white', size=40)
+        pygame.display.flip()
+        spr = pygame.sprite.Group()
+        sprite = Particals.Circle(screen, (size[0] // 10, size[1] // 10 * 9), size)
+        spr.add(sprite)
+        while choice:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                    return
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_1:
+                        count = 1
+                        choice = False
+                    if event.key == pygame.K_2:
+                        count = 2
+                        choice = False
+                    if event.key == pygame.K_3:
+                        count = 3
+                        choice = False
+            spr.update()
+            spr.draw(screen)
+            pygame.display.flip()
         self.music.set_volume(self.volume)
-        self.round = Game(screen, size)
+        self.round = Game(screen, size, count)
         round_is = True
         self.menu = 1
         while round_is:  # Сам процесс игры
@@ -125,7 +152,6 @@ class Interface:  # Интерфейс, здесь происходят те, и
                     screen.fill((0, 0, 0))
                     self.round.sprites.update()
                     self.round.sprites.draw(screen)
-                    time.sleep(5)
                     self.main_menu(screen)
                     return
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:

@@ -67,3 +67,25 @@ class Particle(pygame.sprite.Sprite):
         # убиваем, если частица ушла за экран
         if not self.rect.colliderect(self.screen.get_rect()):
             self.kill()
+
+
+class Circle(pygame.sprite.Sprite):
+    def __init__(self, screen, pos, size):
+        super().__init__()
+        self.size = size
+        self.image = pygame.transform.scale((pygame.image.load("Circle.png")), (size[1] // 10, size[1] // 10))
+        self.rect = self.image.get_rect()
+        self.rect.x, self.rect.y = pos
+        self.vel = 1
+        self.screen = screen
+
+        # гравитация будет одинаковой (значение константы)
+        self.gravity = 1
+        self.screen = screen
+
+    def update(self):
+        self.rect.x += self.vel
+        if self.rect.x >= self.size[0] // 10 * 9:
+            self.vel = -1
+        if self.rect.x == self.size[0] // 10:
+            self.vel = 1
